@@ -1,0 +1,55 @@
+name: "Trivy Image Scan"
+description: "Scan Docker images for vulnerabilities using Trivy"
+author: "Jesus E."
+inputs:
+  version:
+    description: 'Trivy version to use'
+    required: false
+    default: 'v0.58.2'
+  image:
+    description: "Docker image to scan"
+    required: true
+  db-repository:
+    description: "Custom DB repositories for Trivy"
+    required: false
+    default: 'ghcr.io/aquasecurity/trivy-db:2,public.ecr.aws/aquasecurity/trivy-db'
+  java-db-repository:
+    description: "Custom Java DB repositories for Trivy"
+    required: false
+    default: 'ghcr.io/aquasecurity/trivy-java-db:1,public.ecr.aws/aquasecurity/trivy-java-db:1'
+  severity:
+    description: "Severity levels to scan for"
+    required: false
+    default: 'CRITICAL,HIGH'
+  exit-code:
+    description: 'exit code when vulnerabilities were found'
+    required: false
+    default: '1'
+  ignore-unfixed:
+    description: 'ignore unfixed vulnerabilities'
+    required: false
+    default: 'false'
+  pkg-types:
+    description: 'comma-separated list of vulnerability types (os,library)'
+    required: false
+    default: 'os,library'
+  format:
+    description: "Output format for Trivy results (e.g., table, json, etc.)"
+    required: false
+    default: 'table'
+outputs:
+  scan-result:
+    description: "The result of the Trivy scan"
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.version }}
+    - ${{ inputs.image }}
+    - ${{ inputs.db-repository }}
+    - ${{ inputs.java-db-repository }}
+    - ${{ inputs.severity }}
+    - ${{ inputs.exit-code }}
+    - ${{ inputs.ignore-unfixed }}
+    - ${{ inputs.pkg-types }}
+    - ${{ inputs.format }}
