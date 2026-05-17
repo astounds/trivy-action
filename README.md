@@ -35,5 +35,5 @@ jobs:
           pkg-types: 'os'
           format: 'table'
           exit-code: '1'
-          version: 'v0.58.2' # eg. latest, v0.57.1, etc
+          version: 'v0.70.0' # eg. latest, v0.57.1, etc
 ```

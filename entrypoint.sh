@@ -11,6 +11,15 @@ IGNORE_UNFIXED=$7
 PKG_TYPES=$8
 FORMAT=$9
 
+if [ "$VERSION" = "latest" ]; then
+  echo "Resolving latest Trivy version..."
+  VERSION=$(curl -sfL https://api.github.com/repos/aquasecurity/trivy/releases/latest | jq -r '.tag_name')
+  if ! echo "$VERSION" | grep -qE '^v?[0-9]+\.[0-9]+\.[0-9]+$'; then
+    echo "Failed to resolve latest version" >&2; exit 1
+  fi
+  echo "Resolved to $VERSION"
+fi
+
 if ! echo "$VERSION" | grep -qE '^v?[0-9]+\.[0-9]+\.[0-9]+$'; then
   echo "Invalid version format: $VERSION" >&2
   exit 1
